@@ -5,6 +5,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityResurrectEvent;
@@ -17,17 +18,25 @@ public class DamageEvent implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent evt) {
-        Player p = (Player) evt.getEntity();
-        ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
-        // --Checking if the player has a totem in their inventory, then using it if so--
-        if (p.getHealth() <= 0.5d && p.getInventory().containsAtLeast(totem, 1)) {
-            evt.setDamage(0.0d);
-            p.playEffect(EntityEffect.TOTEM_RESURRECT);
-            p.getInventory().remove(totem);
+        if (evt.getEntity() instanceof Player) {
+            Player p = (Player) evt.getEntity();
+            ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
+            // --Checking if the player has a totem in their inventory, then using it if so--
+            if (p.getHealth() <= 0.5d && p.getInventory().containsAtLeast(totem, 1)) {
+                System.out.println("case 1");
+                evt.setDamage(0.0d);
+                p.playEffect(EntityEffect.TOTEM_RESURRECT);
+                p.getInventory().remove(totem);
+            }
 
-
+            if (evt.getDamage() >= p.getHealth() && p.getInventory().containsAtLeast(totem, 1)) {
+                System.out.println("case 2");
+                evt.setDamage(p.getHealth() - 0.5d);
+                p.playEffect(EntityEffect.TOTEM_RESURRECT);
+                p.getInventory().remove(totem);
+            }
         }
     }
 }
