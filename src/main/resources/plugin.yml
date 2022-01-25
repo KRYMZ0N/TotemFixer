@@ -1,0 +1,7 @@
+name: TotemFixer
+version: '${project.version}'
+main: me.krymz0n.totemfixer.Main
+api-version: 1.16
+authors: [ KRYMZ0N ]
+description: A plugin to make totems work better for high ping players at the sacrifice of vanilla totems.
+website: www.3b3t.me
