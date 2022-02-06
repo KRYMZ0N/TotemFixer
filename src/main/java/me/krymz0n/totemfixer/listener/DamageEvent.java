@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class DamageEvent implements Listener {
@@ -29,6 +28,7 @@ public class DamageEvent implements Listener {
                 evt.setDamage(0.0d);
                 p.playEffect(EntityEffect.TOTEM_RESURRECT);
                 p.getInventory().remove(totem);
+                return;
             }
 
             if (evt.getDamage() >= p.getHealth() && p.getInventory().containsAtLeast(totem, 1)) {
@@ -36,6 +36,7 @@ public class DamageEvent implements Listener {
                 evt.setDamage(p.getHealth() - 0.5d);
                 p.playEffect(EntityEffect.TOTEM_RESURRECT);
                 p.getInventory().remove(totem);
+
             }
         }
     }
